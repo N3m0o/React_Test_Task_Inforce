@@ -1,73 +1,52 @@
-# React + TypeScript + Vite
+# Product Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React application for managing a product catalog with features like sorting, editing, and commenting. Built as a technical assignment.
 
-Currently, two official plugins are available:
+## 🚀 Features
+- **Product List**: View all products with images and stock counts.
+- **Sorting**: Sort products by Name (A-Z) or Quantity.
+- **CRUD Operations**: Add, Edit, and Delete products using a unified Modal system.
+- **Product Details**: Dedicated page for each item showing weight, size, and full info.
+- **Comments System**: Add and delete comments for specific products.
+- **Responsive UI**: Clean, light-themed interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Tech Stack
+- **Frontend**: React (Vite), TypeScript.
+- **State Management**: Redux Toolkit (RTK).
+- **Routing**: React Router v6.
+- **Backend Simulation**: JSON Server (REST API).
 
-## React Compiler
+## 📋 Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## ⚙️ Installation & Setup
 
-## Expanding the ESLint configuration
+1. **Clone the repository**:
+   ```bash
+   git clone <your-repo-link>
+   cd <your-repo-name>
+Install dependencies:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Bash
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+npm install
+Start the Backend (JSON Server): In a separate terminal window, run:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Bash
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+npx json-server --watch db.json --port 3001
+Start the Frontend:
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Bash
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+npm run dev
+Open the app: Navigate to http://localhost:5173 (or the port shown in your terminal).
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+📂 Project Structure
+src/store: Redux slices and store configuration.
+
+src/components: Reusable UI components (Modal, etc.).
+
+src/types: TypeScript interfaces.
+
+db.json: Local database file.
