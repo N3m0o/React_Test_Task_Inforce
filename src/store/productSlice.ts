@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
-import type { Product } from '../types';
+import type { Product, Comment } from '../types';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
   const response = await fetch('/products');
@@ -31,6 +31,48 @@ export const updateProduct = createAsyncThunk(
       body: JSON.stringify(product),
     });
     if (!response.ok) throw new Error('Failed to update product');
+    return (await response.json()) as Product;
+  }
+);
+
+export const addComment = createAsyncThunk(
+  'products/addComment',
+  async ({ productId, comment }: { productId: number, comment: Comment }) => {
+    const res = await fetch(`http://localhost:3001/products/${productId}`);
+    const product = await res.json();
+
+    const updatedProduct = {
+      ...product,
+      comments: [...product.comments, comment]
+    };
+
+    const response = await fetch(`http://localhost:3001/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProduct),
+    });
+    if (!response.ok) throw new Error('Failed to add comment');
+    return (await response.json()) as Product;
+  }
+);
+
+export const deleteComment = createAsyncThunk(
+  'products/deleteComment',
+  async ({ productId, commentId }: { productId: number; commentId: number }) => {
+    const res = await fetch(`http://localhost:3001/products/${productId}`);
+    const product = await res.json();
+
+    const updatedProduct = {
+      ...product,
+      comments: product.comments.filter((c: any) => c.id !== commentId)
+    };
+
+    const response = await fetch(`http://localhost:3001/products/${productId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedProduct),
+    });
+    if (!response.ok) throw new Error('Failed to delete comment');
     return (await response.json()) as Product;
   }
 );
@@ -73,6 +115,18 @@ const productSlice = createSlice({
         state.items.push(action.payload);
       })
       .addCase(updateProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(addComment.fulfilled, (state, action: PayloadAction<Product>) => {
+        const index = state.items.findIndex((item) => item.id === action.payload.id);
+        if (index !== -1) {
+          state.items[index] = action.payload;
+        }
+      })
+      .addCase(deleteComment.fulfilled, (state, action: PayloadAction<Product>) => {
         const index = state.items.findIndex((item) => item.id === action.payload.id);
         if (index !== -1) {
           state.items[index] = action.payload;

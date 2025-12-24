@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { addProduct, fetchProducts, updateProduct } from '../store/productSlice';
+import { addProduct, fetchProducts, updateProduct, deleteProduct } from '../store/productSlice';
 import { Link } from 'react-router-dom';
 import { Modal } from '../components/Modal';
 import type { Product } from '../types';
@@ -9,6 +9,10 @@ export const ProductList: React.FC = () => {
   const dispatch = useAppDispatch();
   const [isAddModalOpen, setAddModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+  const [sortBy, setSortBy] = useState<'name' | 'count'>('name');
+
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [productToDelete, setProductToDelete] = useState<Product | null>(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -78,9 +82,47 @@ export const ProductList: React.FC = () => {
     setAddModalOpen(true);
   };
 
+  const handleDeleteClick = (product: Product) => {
+    setProductToDelete(product);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (productToDelete) {
+      dispatch(deleteProduct(productToDelete.id));
+      setDeleteModalOpen(false);
+      setProductToDelete(null);
+    }
+  };
+
+  const sortedItems = [...items].sort((a, b) => {
+    if (sortBy === 'name') {
+      const nameCompare = a.name.localeCompare(b.name);
+      if (nameCompare !== 0) return nameCompare;
+      return b.count - a.count;
+    } else {
+      const countCompare = b.count - a.count;
+      if (countCompare !== 0) return countCompare;
+      return a.name.localeCompare(b.name);
+    }
+  });
+
   return (
     <div className="product-list-page">
       <h2>Goods list</h2>
+
+      <div style={{ marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <label htmlFor="sort">Sort by:</label>
+        <select
+          id="sort"
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as 'name' | 'count')}
+          style={{ padding: '5px', borderRadius: '4px', background: '#444', color: 'white' }}
+        >
+          <option value="name">Alphabetical (A-Z)</option>
+          <option value="count">Quantity (Most first)</option>
+        </select>
+      </div>
 
       <button style={{ marginBottom: '20px' }} onClick={() => setAddModalOpen(true)}>Add good</button>
 
@@ -129,13 +171,25 @@ export const ProductList: React.FC = () => {
         </div>
       </Modal>
 
+      <Modal
+        isOpen={isDeleteModalOpen}
+        title="Confirm Deletion"
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={confirmDelete}
+      >
+        <p>Are you sure you want to delete product "{productToDelete?.name}"?</p>
+      </Modal>
+
       <div className="products-grid" style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-        {items.map((product) => (
+        {sortedItems.map((product) => (
           <div key={product.id} className="product-card" style={{ border: '1px solid #ccc', padding: '15px', borderRadius: '8px' }}>
             <img src={product.imageUrl} alt={product.name} style={{ width: '150px', height: '150px', objectFit: 'cover' }} />
             <h3>{product.name}</h3>
             <p>Quantity: {product.count}</p>
-            <button style={{ margin: '15px', borderRadius: '8px' }} onClick={() => handleEditClick(product)}>Edit</button>
+            <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', margin: '15px 0' }}>
+              <button style={{ borderRadius: '8px', padding: '5px 10px' }} onClick={() => handleEditClick(product)}>Edit</button>
+              <button style={{ borderRadius: '8px', background: '#ff4d4d', color: 'white', padding: '5px 10px' }} onClick={() => handleDeleteClick(product)}>Delete</button>
+            </div>
 
             <Link to={`/product/${product.id}`}>
               <button>View details</button>
