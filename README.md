@@ -25,22 +25,17 @@ Make sure you have [Node.js](https://nodejs.org/) installed.
    ```bash
    git clone <your-repo-link>
    cd <your-repo-name>
-Install dependencies:
-
-Bash
+2. Install dependencies:
 
 npm install
-Start the Backend (JSON Server): In a separate terminal window, run:
-
-Bash
+3. Start the Backend (JSON Server): In a separate terminal window, run:
 
 npx json-server --watch db.json --port 3001
-Start the Frontend:
-
-Bash
+4. Start the Frontend:
 
 npm run dev
-Open the app: Navigate to http://localhost:5173 (or the port shown in your terminal).
+
+5. Open the app: Navigate to http://localhost:5173 (or the port shown in your terminal).
 
 📂 Project Structure
 src/store: Redux slices and store configuration.
