@@ -1,12 +1,27 @@
 {
   "products": [
     {
-      "id": 1,
-      "imageUrl": "https://via.placeholder.com/200",
+      "id": "1",
+      "imageUrl": "https://images.pexels.com/photos/35025884/pexels-photo-35025884.jpeg?_gl=1*1kooad8*_ga*ODI3NDQ2NDc4LjE3NjY1Nzc5MDg.*_ga_8JE65Q40S6*czE3NjY1Nzc5MDckbzEkZzEkdDE3NjY1Nzc5MDkkajU4JGwwJGgw",
       "name": "Test Product",
       "count": 4,
-      "size": { "width": 200, "height": 200 },
+      "size": {
+        "width": 200,
+        "height": 200
+      },
       "weight": "200g",
+      "comments": []
+    },
+    {
+      "id": "cb56",
+      "name": "refref",
+      "count": 3,
+      "imageUrl": "https://images.pexels.com/photos/35288906/pexels-photo-35288906.jpeg?_gl=1*3sdg6o*_ga*ODI3NDQ2NDc4LjE3NjY1Nzc5MDg.*_ga_8JE65Q40S6*czE3NjY1Nzc5MDckbzEkZzEkdDE3NjY1Nzc5MzckajMwJGwwJGgw",
+      "weight": "12",
+      "size": {
+        "width": 1,
+        "height": 1
+      },
       "comments": []
     }
   ]
