@@ -1,0 +1,13 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "imageUrl": "https://via.placeholder.com/200",
+      "name": "Test Product",
+      "count": 4,
+      "size": { "width": 200, "height": 200 },
+      "weight": "200g",
+      "comments": []
+    }
+  ]
+}
